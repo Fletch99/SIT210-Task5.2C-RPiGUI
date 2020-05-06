@@ -1,0 +1,67 @@
+from tkinter import *
+import tkinter.font
+
+import RPi.GPIO as GPIO
+from time import sleep
+## HARDWARE ##
+GPIO21 = 21
+GPIO20 = 20
+GPIO16 = 16
+## SETUP ##
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(GPIO21, GPIO.OUT)
+GPIO.setup(GPIO20, GPIO.OUT)
+GPIO.setup(GPIO16, GPIO.OUT)
+
+## GUI DEFINITIONS ##
+win = Tk()
+win.title("LED Toggler")
+win.geometry("300x100")
+
+def sel():
+    selection = "you have selected the option" + str(var.get())
+    label.config(text = selection)
+## GPIO16 ##
+def GPIO16select():
+    GPIO.output(GPIO21, False)
+    GPIO.output(GPIO20, False)
+    GPIO.output(GPIO16, True)
+    
+## GPIO20 ##
+def GPIO20select():
+    GPIO.output(GPIO21, False)
+    GPIO.output(GPIO20, True)
+    GPIO.output(GPIO16, False)
+    
+## GPIO20 ##
+def GPIO21select():
+    GPIO.output(GPIO21, True)
+    GPIO.output(GPIO20, False)
+    GPIO.output(GPIO16, False)
+
+def Exit():
+    GPIO.output(GPIO21, False)
+    GPIO.output(GPIO20, False)
+    GPIO.output(GPIO16, False)
+    
+GPIO.output(GPIO21, False)
+GPIO.output(GPIO20, False)
+GPIO.output(GPIO16, False)
+
+### GPIO FUNCTIONS ###
+var = IntVar()
+R1 =Radiobutton(win,text="RED",variable=var,value=1,command=GPIO16select)
+R1.pack(anchor = W)
+
+R2 =Radiobutton(win,text="WHITE",variable=var,value=2,command=GPIO20select)
+R2.pack(anchor = W)
+
+R3 =Radiobutton(win,text="YELLOW",variable=var,value=3,command=GPIO21select)
+R3.pack(anchor = W)
+
+b = Button(win, text="Exit", command = Exit)
+b.pack()
+
+label = label(win)
+label.pack()
+win.mainloop()
